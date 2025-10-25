@@ -1,26 +1,31 @@
 # 📚 Project Two Documentation Index (Authoritative)
 
-This index defines the canonical files ChatGPT will reference.
+These are the canonical documents used for the Project Two database, metrics, and context rules.
 
-## Core Docs
+---
 
-- database_schema_overview.md  
-  DB layout, keys, legality flags, expected join logic.
+## Core Documentation
 
-- metrics_batting.md  
-  Batting metric definitions, column order, formulas.
+- **database_schema_overview.md**  
+  High-level schema, keys, legality rules, and database structure.
 
-- metrics_bowling.md  
-  Bowling metric definitions, column order, formulas.
+- **metrics_batting.md**  
+  Batting statistical definitions, column order, and formulas.
 
-- context_dimension_rules.md  
-  All context breakdown rules and reconciliation expectations.
+- **metrics_bowling.md**  
+  Bowling statistical definitions, column order, and formulas.
 
-## Archive
+- **context_dimension_rules.md**  
+  All contextual breakdown rules for batting and bowling, including reconciliation expectations.
 
-Legacy files preserved temporarily:
+---
 
-- archive/DATA_SCHEMA_LITE.md
-- archive/METRICS_AND_CONTEXT_LITE.md
-- archive/PROJECT_MASTER_PLAN_LITE.md
-- archive/ROLE_GUIDE_COMPACT.md
+## Archive (Legacy Only)
+Older draft documents preserved for historical reference.
+
+- archive/DATA_SCHEMA_LITE.md  
+- archive/METRICS_AND_CONTEXT_LITE.md  
+- archive/PROJECT_MASTER_PLAN_LITE.md  
+- archive/ROLE_GUIDE_COMPACT.md  
+
+Do not use archived files for development or queries.
