@@ -42,3 +42,4 @@ no double counting (team total = batter + extras)
 super overs excluded
 phase mapping one-per-delivery
 player resolution 100%
+
