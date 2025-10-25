@@ -1,56 +1,98 @@
-File: metrics_batting.md
+# Batting Metrics (Authoritative)
+Version: v1.0 • Last updated: 2025-10-25
 
-Purpose: Canonical definitions and column order for batting metrics (season and career aggregations).Source views: main.v_batting_totals_season (and analogous career view when added).Input basis: staging.v_deliveries_enriched with legality flag is_ball_faced_batter (counts legal balls faced for batting).Global exclusions: Exclude super overs (innings 3 and 4) from all metrics.
+## Purpose
+Canonical definitions and column order for batting metrics (season and career aggregations).
 
-1) Column order (final)
+**Source views**  
+`main.v_batting_totals_season` (career equivalent view planned)
 
+**Input basis**  
+`staging.v_deliveries_enriched` using legality flag `is_ball_faced_batter`
+
+**Global exclusions**  
+Super overs (innings 3 and 4) are excluded from all metrics.
+
+---
+
+## Column Order (Final)
 year, player_name, matches, innings, runs, balls_faced,
 outs, not_outs, average, strike_rate,
 HS, fours, sixes, dots, B_percent, D_percent,
 fifties, hundreds
 
-2) Definitions
+---
 
-matches: Count of distinct matches where the player batted at least once (innings_number in {1,2}).
+## Metric Definitions
 
-innings: Count of batting innings for the player (innings where is_ball_faced_batter = TRUE or a dismissal recorded for the player).
+- **matches**  
+  Distinct matches where the player batted at least once (innings_number in {1,2}).
 
-runs: Sum of runs_batter_credit across legal batting deliveries for the player.
+- **innings**  
+  Batting innings where `is_ball_faced_batter = TRUE` or a dismissal is recorded.
 
-balls_faced: Count of deliveries where is_ball_faced_batter = TRUE for the player. Wides do not count; no-balls count as balls faced only if a legal ball was delivered (follow your upstream flag’s logic).
+- **runs**  
+  Sum of `runs_batter_credit` across legal batting deliveries.
 
-outs: Number of innings where the batter was dismissed (any player_out_name = player_name).
+- **balls_faced**  
+  Count of deliveries with `is_ball_faced_batter = TRUE`.  
+  • Wides do not count  
+  • No-balls count only if a legal ball was delivered
 
-not_outs: innings - outs.
+- **outs**  
+  Dismissals where `player_out_name = player_name`.
 
-average: runs / outs if outs > 0, else NULL (display as —).
+- **not_outs**  
+  `innings - outs`.
 
-strike_rate: 100 * runs / balls_faced (uses is_ball_faced_batter).
+- **average**  
+  `runs / outs` if `outs > 0` else `NULL`.
 
-HS (High Score): Max runs in a single innings. If not out in that innings, conventional notation is e.g. 72* for display; the stored numeric is 72.
+- **strike_rate**  
+  `100 * runs / balls_faced`.
 
-fours: Count of boundary fours hit by the batter.
+- **HS (High Score)**  
+  Maximum single-innings runs.  
+  Stored numeric does not include `*` marker.
 
-sixes: Count of boundary sixes hit by the batter.
+- **fours**  
+  Boundary fours hit by the batter.
 
-dots: Count of balls faced where the batter scored 0 off the bat (deliveries with runs_batter_credit = 0, limited to is_ball_faced_batter = TRUE).
+- **sixes**  
+  Boundary sixes hit by the batter.
 
-B_percent (Boundary %): boundary_runs / runs where boundary_runs = 4*fours + 6*sixes. If runs = 0, return NULL (display 0% only if you explicitly want that policy).
+- **dots**  
+  Legal balls faced with `runs_batter_credit = 0`.
 
-D_percent (Dot %): dots / balls_faced. If balls_faced = 0, NULL.
+- **B_percent (Boundary %)**  
+  `boundary_runs / runs`  
+  where `boundary_runs = 4*fours + 6*sixes`.  
+  If `runs = 0`: return `NULL`.
 
-fifties: Count of innings with 50–99 runs.
+- **D_percent (Dot %)**  
+  `dots / balls_faced`.  
+  If `balls_faced = 0`: `NULL`.
 
-hundreds: Count of innings with ≥100 runs.
+- **fifties**  
+  Innings with 50–99 runs.
 
-3) Counting & legality rules
+- **hundreds**  
+  Innings with 100+ runs.
 
-Use is_ball_faced_batter for all batting ball counts.
+---
 
-Super overs excluded globally (innings 3–4).
+## Counting & Legality Rules
+- Use **`is_ball_faced_batter`** for ball counts.
+- Exclude super overs (innings 3–4).
+- Wides never count as balls faced.
 
-Wides never count as balls faced; no-balls follow upstream flag logic in is_ball_faced_batter.
+---
 
-4) Reconciliation expectations
+## Reconciliation Expectations
+For every context grouping:  
+The sum of **runs**, **balls_faced**, and **outs** must match the player-season totals exactly.
 
-For any context breakdown (vs spin/seam, by position, by over, by innings, by venue, by result, vs bowling hand), aggregated runs, balls_faced, outs must sum exactly to the season totals for each player.
+---
+
+## Status
+Authoritative and enforced.
