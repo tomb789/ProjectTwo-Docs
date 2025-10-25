@@ -1,23 +1,26 @@
-# 📚 Project Two Docs Index
+# 📚 Project Two Documentation Index (Authoritative)
 
-A lookup for core rules and references.
+This index defines the canonical files ChatGPT will reference.
 
-## Metrics
-File: METRICS_AND_CONTEXT_LITE.md  
-• Metric definitions  
-• Column order rules for batting and bowling  
-• Context logic (venue, hand, position, etc.)
+## Core Docs
 
-## Database Schema
-File: DATA_SCHEMA_LITE.md  
-• Table list and structure  
-• Key columns and joins
+- database_schema_overview.md  
+  DB layout, keys, legality flags, expected join logic.
 
-## Project Plan
-File: PROJECT_MASTER_PLAN_LITE.md  
-• Current project phase  
-• Upcoming build steps
+- metrics_batting.md  
+  Batting metric definitions, column order, formulas.
 
-## Roles & Responsibilities
-File: ROLE_GUIDE_COMPACT.md  
-• Technical collaborator roles  
+- metrics_bowling.md  
+  Bowling metric definitions, column order, formulas.
+
+- context_dimension_rules.md  
+  All context breakdown rules and reconciliation expectations.
+
+## Archive
+
+Legacy files preserved temporarily:
+
+- archive/DATA_SCHEMA_LITE.md
+- archive/METRICS_AND_CONTEXT_LITE.md
+- archive/PROJECT_MASTER_PLAN_LITE.md
+- archive/ROLE_GUIDE_COMPACT.md
