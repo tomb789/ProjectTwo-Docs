@@ -1,0 +1,44 @@
+Hundred Cricket Database — Schema Reference (Lite)
+
+Source → Staging tables:
+stg_raw_yaml(file_name, file_hash, data_json)
+stg_matches(match_id, competition, season, date, venue, city, team1, team2,
+             winner, balls_per_over, overs_per_innings)
+stg_players(player_id, player_name)
+stg_match_players(match_id, team_name, player_name, player_id)
+stg_innings(match_id, innings_number, batting_team, bowling_team, total_runs, wickets, overs_faced, extras_total)
+stg_deliveries(match_id, innings_number, ball_number, over_ball,
+               batsman_id, bowler_id, runs_batter, runs_extras, runs_total,
+               extras_type, wicket_type, player_out_id)
+stg_officials, stg_teams optional
+
+Dimensions:
+dim_competitions, dim_teams, dim_venues, dim_players, dim_players_enriched, dim_phase_schemes
+
+Derived / Views:
+v_deliveries_enriched — canonical delivery view (legality + joins)
+v_batting_positions, v_bowling_orders — inferred roles
+v_batting_totals_season, v_bowling_totals_season
+v_batting_by_phase, v_bowling_by_phase
+v_batting_vs_style, v_bowling_vs_hand
+fact_batting_totals, fact_bowling_totals
+
+Relationships:
+stg_matches 1→n stg_innings, stg_deliveries
+stg_innings 1→n stg_deliveries
+stg_players/stg_match_players referenced by stg_deliveries
+dims join via *_id or *_name
+v_deliveries_enriched joins all dims → feeds v_batting_* and v_bowling_*
+
+Data types:
+IDs TEXT | Counts INTEGER | Rates FLOAT | Dates DATE | JSON JSON
+
+Validation rules:
+balls_per_over ∈ {5,6}
+wickets_per_innings ≤10
+overs_faced ≤ overs_per_innings
+referential integrity full
+no double counting (team total = batter + extras)
+super overs excluded
+phase mapping one-per-delivery
+player resolution 100%
